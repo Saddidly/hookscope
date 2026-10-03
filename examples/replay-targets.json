@@ -1,0 +1,7 @@
+[
+  {
+    "id": "local-receiver",
+    "label": "Local receiver",
+    "url": "http://127.0.0.1:9000/webhooks/example"
+  }
+]

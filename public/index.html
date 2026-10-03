@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>HookScope — webhook inspector</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="HookScope home"
+        ><span class="brand-mark" aria-hidden="true">H</span>HookScope</a
+      >
+      <div class="topbar-meta">
+        <span class="local-indicator"
+          ><span aria-hidden="true"></span> Local capture</span
+        ><button
+          id="refresh-button"
+          class="button button-secondary"
+          type="button"
+        >
+          Refresh
+        </button>
+      </div>
+    </header>
+    <main class="page-shell">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">WEBHOOK DEVELOPMENT</p>
+          <h1 id="page-title">Request inspector</h1>
+          <p class="intro-copy">
+            Capture requests, inspect their exact payloads, and replay them to a
+            configured local receiver.
+          </p>
+        </div>
+        <div class="trust-note">
+          <strong>Private by default</strong
+          ><span
+            >HookScope listens on this computer. Sensitive headers are redacted
+            before storage.</span
+          >
+        </div>
+      </section>
+
+      <section class="capture-address" aria-label="Capture endpoint">
+        <div>
+          <span class="eyebrow">SEND A WEBHOOK TO</span
+          ><code id="capture-url">Loading address…</code>
+        </div>
+        <p>Any HTTP method · checking request limit…</p>
+      </section>
+
+      <section class="workspace" aria-label="Captured requests">
+        <aside class="history-panel" aria-labelledby="history-title">
+          <div class="panel-heading">
+            <div>
+              <h2 id="history-title">History</h2>
+              <p id="capture-count" class="muted">Loading captures…</p>
+            </div>
+          </div>
+          <form id="filters" class="filters">
+            <label for="search-filter">Search</label>
+            <input
+              id="search-filter"
+              name="q"
+              type="search"
+              placeholder="Path, query, or method"
+            />
+            <div class="filter-row">
+              <div>
+                <label for="endpoint-filter">Endpoint</label
+                ><select id="endpoint-filter" name="endpoint">
+                  <option value="">All endpoints</option>
+                </select>
+              </div>
+              <div>
+                <label for="method-filter">Method</label
+                ><select id="method-filter" name="method">
+                  <option value="">All methods</option>
+                  <option>GET</option>
+                  <option>POST</option>
+                  <option>PUT</option>
+                  <option>PATCH</option>
+                  <option>DELETE</option>
+                  <option>OPTIONS</option>
+                </select>
+              </div>
+            </div>
+            <button class="visually-hidden" type="submit">Apply filters</button>
+          </form>
+          <div
+            id="history-list"
+            class="history-list"
+            aria-label="Captured request history"
+            aria-live="polite"
+          ></div>
+          <p id="history-empty" class="empty-state">
+            No captures yet. Send a request to your endpoint above.
+          </p>
+        </aside>
+
+        <section class="detail-panel" aria-labelledby="detail-title">
+          <div id="detail-empty" class="detail-empty">
+            <div class="empty-icon" aria-hidden="true">↙</div>
+            <h2 id="detail-title">Select a request</h2>
+            <p>
+              Choose an item in history to inspect its headers, query
+              parameters, and body.
+            </p>
+          </div>
+          <article id="detail-view" hidden>
+            <div class="detail-heading">
+              <div class="request-title">
+                <span id="detail-method" class="method-badge"></span>
+                <div>
+                  <h2 id="detail-title-value"></h2>
+                  <p id="detail-meta" class="muted"></p>
+                </div>
+              </div>
+              <button
+                id="delete-button"
+                class="button button-danger-quiet"
+                type="button"
+              >
+                Delete
+              </button>
+            </div>
+            <section class="replay-box" aria-labelledby="replay-title">
+              <div>
+                <h3 id="replay-title">Replay request</h3>
+                <p id="replay-help" class="muted">
+                  Replay uses a target configured by the server owner.
+                </p>
+              </div>
+              <div class="replay-controls">
+                <label class="visually-hidden" for="target-select"
+                  >Replay target</label
+                ><select id="target-select">
+                  <option value="">No targets configured</option></select
+                ><button
+                  id="replay-button"
+                  class="button button-primary"
+                  type="button"
+                  disabled
+                >
+                  Replay
+                </button>
+              </div>
+            </section>
+            <div id="replay-result" class="replay-result" hidden></div>
+            <section class="detail-section">
+              <h3>
+                Query parameters
+                <span id="query-count" class="section-count"></span>
+              </h3>
+              <div id="query-table" class="key-value-list"></div>
+            </section>
+            <section class="detail-section">
+              <h3>
+                Headers <span id="header-count" class="section-count"></span>
+              </h3>
+              <div id="header-table" class="key-value-list"></div>
+            </section>
+            <section class="detail-section body-section">
+              <div class="body-title">
+                <h3>Body <span id="body-size" class="section-count"></span></h3>
+                <button
+                  id="copy-body"
+                  class="button button-secondary button-small"
+                  type="button"
+                >
+                  Copy
+                </button>
+              </div>
+              <pre id="body-content" class="body-content"><code></code></pre>
+            </section>
+          </article>
+        </section>
+      </section>
+      <p
+        id="status-message"
+        class="status-message"
+        role="status"
+        aria-live="polite"
+      ></p>
+    </main>
+    <footer>
+      <span>HookScope stores captures in its local SQLite database.</span
+      ><span>Self-hosted debugging tool</span>
+    </footer>
+  </body>
+</html>
