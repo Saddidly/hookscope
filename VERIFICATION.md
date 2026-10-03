@@ -10,6 +10,11 @@ Local evidence recorded on 2026-10-03.
 
 Windows Node.js 22.14.0. Built-in SQLite is experimental at this minimum version. Browser replay was not exercised; integration tests verify its actual HTTP receiver behavior. No public deployment is supported.
 
-The checked-in CI workflow is ready to run when published. It is configuration,
-not evidence of a hosted pass. Re-run README commands after changing dependencies
-or moving to another platform. Screenshots, where included, use synthetic data.
+## Hosted evidence
+
+[GitHub Actions run](https://github.com/Saddidly/hookscope/actions/runs/37111967349) passed on 2026-10-03 for code revision `aa3d3952705b45839f68854d6a3e79a5090ca48f`.
+
+Ubuntu, Node 22/24; HTTP/SQLite integration tests and Chromium desktop/mobile capture, filter, redaction, replay restriction, and deletion flows.
+
+These checks cover the named environments and cases, not every possible input or platform. Re-run README commands after changing dependencies or moving to another platform. Screenshots and acceptance data are synthetic.
+
