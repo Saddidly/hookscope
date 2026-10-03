@@ -6,3 +6,7 @@ data/
 *.sqlite-wal
 coverage/
 .DS_Store
+
+.playwright-data/
+test-results/
+playwright-report/

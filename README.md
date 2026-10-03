@@ -88,3 +88,16 @@ Tests use temporary databases and local HTTP receivers to exercise persistence, 
 Synthetic example data from the local browser check.
 
 ![hookscope interface](docs/images/desktop.png)
+
+## Repeatable browser acceptance
+
+```sh
+npx playwright install chromium
+npm run test:e2e
+```
+
+The tests launch an isolated local server, run desktop and mobile Chromium
+contexts, and check actual user flows rather than mocked APIs. Persistent service
+data uses a fresh `.playwright-data` location. Failure traces/screenshots are
+captured under `test-results`; neither directory belongs in source control.
+These checks cover the browser build, not native Android/iOS behavior.
